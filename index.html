@@ -48,11 +48,12 @@ layout: default
       margin: 0; /* マージンをリセット */
     }
     .toggle-normal {
-      font-size: 1em; /* 任意のサイズに変更 */
-      margin-bottom: 10px; /* トグル見出しの下にマージンを追加 */
+      font-size:  0.9em; /* 任意のサイズに変更 */
+      margin-bottom: 0px; /* トグル見出しの下にマージンを追加 */
     }
     .toggle-small {
       font-size: 0.8em; /* 任意のサイズに変更 */
+      margin-top: 10px;
     }
     .toggle-content {
       display: none;
@@ -80,19 +81,36 @@ layout: default
     .form-group {
       display: flex;
       align-items: center;
-      margin-bottom: 10px;
     }
     .form-group.user-id-group {
-      margin-top: 5px; /* user ID の上部にマージンを追加 */
+      margin-top: 8px; /* user ID の上部にマージンを追加 */
     }
     .form-group label {
-      width: 120px; /* ラベルの幅を固定 */
+      width: 150px; /* ラベルの幅を固定 */
     }
     .form-group input {
-      width: 200px; /* 入力フィールドの幅を固定 */
+      width: 80px; /* 入力フィールドの幅を固定 */
     }
     .form-group button {
       margin-left: 10px; /* 生成ボタンの左側にスペースを確保 */
+      padding: 5px 30px; /* ボタンの内側の余白を1.5倍に設定 */
+      font-size: 1.2em; /* ボタンの文字サイズを1.5倍に設定 */
+    }
+    .form-group button:hover {
+      background-color: #b7d5f0; /* ボタンのホバー時の背景色を設定 */
+    }
+    /* コピーボタンのスタイルを追加 */
+    .copy-button {
+      padding: 5px 30px; /* ボタンの内側の余白を1.5倍に設定 */
+      font-size: 1.2em; /* ボタンの文字サイズを1.5倍に設定 */
+      /*background-color: #007bff;  ボタンの背景色を設定 */
+      /*color: white;  ボタンの文字色を設定 */
+      /*border: none;  ボタンの枠を削除 */
+      /*border-radius: 5px;  ボタンの角を丸める */
+      cursor: pointer; /* カーソルをポインタにする */
+    }
+    .copy-button:hover {
+      background-color: #b7d5f0; /* ボタンのホバー時の背景色を設定 */
     }
   </style>
 </head>
@@ -100,24 +118,24 @@ layout: default
 
   <!-- 1つ目の機能 -->
   <div class="section">
-    <h3>レート / 報酬・ランキング 確認用URL</h3>
+    <h4><b>レート / 報酬・ランキング 確認用URL</b></h4>
     <span class="toggle toggle-normal" onclick="toggleContent('toggle-rate')">レート / 報酬・ランキング 確認用URLとは</span>
     <div class="toggle-content" id="toggle-rate">
-      レートをカンストしたユーザーのレート、累計スコア報酬、レート報酬、ランキングが確認できるページのURLです。<br>
+      レート、累計スコア報酬、レート報酬、ランキングが確認できるページのURLです。<br>
     </div>
     <div class="form-group user-id-group">
       <label for="rating-id">user ID :</label>
-      <input type="number" id="rating-id" placeholder="半角数字のみ・空欄可">
+      <input type="number" id="rating-id" placeholder="半角数字">
     </div>
     <div class="form-group">
       <label for="rating-season">シーズン番号 :</label>
-      <input type="number" id="rating-season" placeholder="半角数字のみ・空欄可">
+      <input type="number" id="rating-season" placeholder="半角数字">
       <button onclick="rateConfirmation()">生成</button>
     </div>
     <span class="toggle toggle-small" onclick="toggleContent('toggle-v1')">入力欄を空欄にすると...</span>
     <div class="toggle-content" id="toggle-v1">
-      「user ID」が空欄の場合、レートを見ることができない一般的なエモバトのページのURLが出力されます。<br>
-      ★用途がレート確認でない場合は空欄で良いです。<br><br>
+      「user ID」が空欄の場合、9999以上のレートを確認することができない一般的なエモバトのページのURLが出力されます。<br>
+      ★レート確認に使用しない場合は空欄で良いです。<br><br>
       「シーズン番号」が空欄の場合、「生成」ボタンを押した日付の23:59までに開催されたエモバトの中で最も新しいシーズンが自動的に設定されます。<br>
       ★開催前シーズンのページを見る時や、昔のシーズンを振り返る時はシーズン番号を入力する必要があります。<br>
     </div>
@@ -132,19 +150,20 @@ layout: default
 
   <!-- 2つ目の機能 -->
   <div class="section">
-    <h3>Web配信視聴用URL</h3>
+    <h4><b>Web配信視聴用URL</b></h4>
     <span class="toggle toggle-normal" onclick="toggleContent('toggle-viewing')">Web配信視聴用URLとは</span>
     <div class="toggle-content" id="toggle-viewing">
       Webからログアウト状態で配信を視聴するためのURLです。<br>
     </div>
     <div class="form-group user-id-group">
       <label for="viewing-id">user ID :</label>
-      <input type="number" id="viewing-id" placeholder="半角数字のみ">
+      <input type="number" id="viewing-id" placeholder="半角数字">
       <button onclick="broadcastViewing()">生成</button>
     </div>
     <span class="toggle toggle-small" onclick="toggleContent('toggle-v2')">入力欄を空欄にすると...</span>
     <div class="toggle-content" id="toggle-v2">
-      ※「user ID」が空欄の場合、ID部分が省略されたURLが出力されます。<br>
+      「user ID」が空欄の場合、ID部分が省略されたURLが出力されます。<br>
+      ★特に空欄にする意味はありません。
     </div>
     <div class="result-container">
       <div class="result-header">
@@ -162,10 +181,6 @@ layout: default
 
     function broadcastViewing() {
       const number = document.getElementById("viewing-id").value;
-      if (isEmpty(number)) {
-        alert("ユーザーIDを入力してください。");
-        return;
-      }
       const result = "https://www.mirrativ.com/user/" + number;
       document.getElementById("result_viewing").innerText = result;
     }
@@ -192,7 +207,7 @@ layout: default
       }
       number_2 += 4993;
       number_2 = number_2.toString();
-      const result = "https://preview.page.link/mirrativ.page.link?=https://www.mirrativ.com/shooter/" + number_2 + number_1;
+      const result = "https://preview.page.link/mirrativ.page.link?link=https://www.mirrativ.com/shooter/" + number_2 + number_1;
       document.getElementById('result_rating').innerText = result;
     }
 
