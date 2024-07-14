@@ -126,12 +126,22 @@ layout: default
       <input type="number" id="rating-season" placeholder="半角数字">
       <button onclick="rateConfirmation()">生成</button>
     </div>
-    <span class="toggle toggle-small" onclick="toggleContent('toggle-v1')">入力欄を空欄にすると...</span>
+    <span class="toggle toggle-small" onclick="toggleContent('toggle-v1')">空欄を活用して入力をラクにしよう</span>
     <div class="toggle-content" id="toggle-v1">
       「user ID」が空欄の場合、9999以上のレートを確認することができない一般的なエモバトのページのURLが出力されます。<br>
-      ★レート確認に使用しない場合は空欄で良いです。<br><br>
+      ★レート確認に使用しない場合は空欄でよいです。<br><br>
       「シーズン番号」が空欄の場合、「生成」ボタンを押した日付の23:59までに開催されたエモバトの中で最も新しいシーズンが自動的に設定されます。<br>
-      ★開催前シーズンのページを見る時や、昔のシーズンを振り返る時はシーズン番号を入力する必要があります。<br>
+      <span class="toggle toggle-normal" onclick="toggleContent('toggle-example')">もっと詳しく</span>
+      <div class="toggle-content" id="toggle-example">
+        <b>エモバトは毎月1日のAM11:00開催であること、2024/06/01 - 2024/06/10にシーズン40が開催されたことを念頭に置いてください。</b><br><br>
+        2024/06/20に生成<br>
+        >> シーズン40に設定されます。<br><br>
+        2024/06/01 AM7:00に生成<br>
+        >> 生成ボタンを押した時点ではまだシーズン40は開催されていませんが、その日の23:59までには開催されています。したがってシーズン40に設定されます。<br><br>
+        2024/05/31 PM23:00 に生成<br>
+        >> シーズン40に関する情報が公式からすでに発表されている時間ですが、その日にはまだ開催されないため、シーズン39に設定されます。開催前のシーズンや昔のページを見たい場合はシーズン番号を入力してください。<br>
+      </div>
+      ★エモバト開催中にレートやランキングを確認したい場合は空欄でよいです。
     </div>
     <div class="result-container">
       <div class="result-header">
