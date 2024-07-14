@@ -1,0 +1,214 @@
+---
+layout: default
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>URL生成ツール</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    .result-container {
+      position: relative; /* 相対位置を設定 */
+      margin-top: 5px; /* 上にスペースを確保 */
+    }
+    .result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0px;
+    }
+    .result-header h4 {
+      margin: 0;
+      font-size: 1em; /* h5くらいの太さに設定 */
+    }
+    .result {
+      font-size: 1em; /* 文字サイズを少し小さくする */
+      color: black; /* 文字色を黒にする */
+      border: 1px solid #ccc; /* 枠を設定 */
+      padding: 10px; /* 内側の余白を設定 */
+      min-height: 30px; /* 枠の最小高さを設定 */
+      background-color: #f9f9f9; /* 背景色を設定 */
+      overflow-wrap: break-word; /* 長い文字列が枠を超えないようにする */
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .section h3 {
+      margin-bottom: 3px; /* 見出しの下部マージンを減らす */
+    }
+    .toggle {
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+      margin: 0; /* マージンをリセット */
+    }
+    .toggle-normal {
+      font-size: 1em; /* 任意のサイズに変更 */
+      margin-bottom: 10px; /* トグル見出しの下にマージンを追加 */
+    }
+    .toggle-small {
+      font-size: 0.8em; /* 任意のサイズに変更 */
+    }
+    .toggle-content {
+      display: none;
+      margin-top: 0px; /* 上部のマージンを減らす */
+      margin-bottom: 0px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+    }
+    .toggle-content span::after {
+      content: ""; /* 空のコンテンツを追加 */
+      display: block;
+      height: 10px; /* 任意の高さに設定 */
+    }
+    /* 数字入力フィールドの上下ボタンを非表示にする */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield; /* Firefox用 */
+    }
+    /* ラベルと入力フィールドを揃えるためのスタイル */
+    .form-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .form-group.user-id-group {
+      margin-top: 5px; /* user ID の上部にマージンを追加 */
+    }
+    .form-group label {
+      width: 120px; /* ラベルの幅を固定 */
+    }
+    .form-group input {
+      width: 200px; /* 入力フィールドの幅を固定 */
+    }
+    .form-group button {
+      margin-left: 10px; /* 生成ボタンの左側にスペースを確保 */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1つ目の機能 -->
+  <div class="section">
+    <h3>レート / 報酬・ランキング 確認用URL</h3>
+    <span class="toggle toggle-normal" onclick="toggleContent('toggle-rate')">レート / 報酬・ランキング 確認用URLとは</span>
+    <div class="toggle-content" id="toggle-rate">
+      レートをカンストしたユーザーのレート、累計スコア報酬、レート報酬、ランキングが確認できるページのURLです。<br>
+    </div>
+    <div class="form-group user-id-group">
+      <label for="rating-id">user ID :</label>
+      <input type="number" id="rating-id" placeholder="半角数字のみ・空欄可">
+    </div>
+    <div class="form-group">
+      <label for="rating-season">シーズン番号 :</label>
+      <input type="number" id="rating-season" placeholder="半角数字のみ・空欄可">
+      <button onclick="rateConfirmation()">生成</button>
+    </div>
+    <span class="toggle toggle-small" onclick="toggleContent('toggle-v1')">入力欄を空欄にすると...</span>
+    <div class="toggle-content" id="toggle-v1">
+      「user ID」が空欄の場合、レートを見ることができない一般的なエモバトのページのURLが出力されます。<br>
+      ★用途がレート確認でない場合は空欄で良いです。<br><br>
+      「シーズン番号」が空欄の場合、「生成」ボタンを押した日付の23:59までに開催されたエモバトの中で最も新しいシーズンが自動的に設定されます。<br>
+      ★開催前シーズンのページを見る時や、昔のシーズンを振り返る時はシーズン番号を入力する必要があります。<br>
+    </div>
+    <div class="result-container">
+      <div class="result-header">
+        <h4>生成されたURL</h4>
+        <button class="copy-button" onclick="copyToClipboard('result_rating')">コピー</button>
+      </div>
+      <div class="result" id="result_rating"></div>
+    </div>
+  </div>
+
+  <!-- 2つ目の機能 -->
+  <div class="section">
+    <h3>Web配信視聴用URL</h3>
+    <span class="toggle toggle-normal" onclick="toggleContent('toggle-viewing')">Web配信視聴用URLとは</span>
+    <div class="toggle-content" id="toggle-viewing">
+      Webからログアウト状態で配信を視聴するためのURLです。<br>
+    </div>
+    <div class="form-group user-id-group">
+      <label for="viewing-id">user ID :</label>
+      <input type="number" id="viewing-id" placeholder="半角数字のみ">
+      <button onclick="broadcastViewing()">生成</button>
+    </div>
+    <span class="toggle toggle-small" onclick="toggleContent('toggle-v2')">入力欄を空欄にすると...</span>
+    <div class="toggle-content" id="toggle-v2">
+      ※「user ID」が空欄の場合、ID部分が省略されたURLが出力されます。<br>
+    </div>
+    <div class="result-container">
+      <div class="result-header">
+        <h4>生成されたURL</h4>
+        <button class="copy-button" onclick="copyToClipboard('result_viewing')">コピー</button>
+      </div>
+      <div class="result" id="result_viewing"></div>
+    </div>
+  </div>
+
+  <script>
+    function isEmpty(input) {
+      return input === null || input === undefined || input.trim() === "";
+    }
+
+    function broadcastViewing() {
+      const number = document.getElementById("viewing-id").value;
+      if (isEmpty(number)) {
+        alert("ユーザーIDを入力してください。");
+        return;
+      }
+      const result = "https://www.mirrativ.com/user/" + number;
+      document.getElementById("result_viewing").innerText = result;
+    }
+
+    function rateConfirmation() {
+      var number_1 = document.getElementById('rating-id').value;
+      var number_2 = document.getElementById("rating-season").value;
+
+      // user_id
+      if (!isEmpty(number_1)){
+        number_1 = "?broadcaster_id=" + number_1;
+      }
+
+      // season_number
+      if (isEmpty(number_2)){
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1;
+        number_2 = (year - 2021) * 12 + (month - 2);
+      }
+      number_2 = Number(number_2);
+      if (number_2 > 37){
+        number_2 += 1;
+      }
+      number_2 += 4993;
+      number_2 = number_2.toString();
+      const result = "https://preview.page.link/mirrativ.page.link?=https://www.mirrativ.com/shooter/" + number_2 + number_1;
+      document.getElementById('result_rating').innerText = result;
+    }
+
+    function copyToClipboard(resultId) {
+      const resultText = document.getElementById(resultId).innerText;
+      navigator.clipboard.writeText(resultText);
+    }
+
+    function toggleContent(id) {
+      const content = document.getElementById(id);
+      if (content.style.display === "none" || content.style.display === "") {
+        content.style.display = "block";
+      } else {
+        content.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>
